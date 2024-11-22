@@ -1,0 +1,12 @@
+{
+  "themes": [
+    {
+      "name": "usl",
+      "types": [
+        "login",
+        "email",
+        "common"
+      ]
+    }
+  ]
+}

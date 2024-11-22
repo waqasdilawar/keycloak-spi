@@ -1,0 +1,38 @@
+version: '3.7'
+name: "keycloak-spi"
+services:
+
+  keycloak-db:
+    image: 'postgres:alpine'
+    container_name: keycloak-db
+    environment:
+      - 'POSTGRES_DB=keycloak'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '15432:5432'
+    volumes:
+      - ./docker/postgres_data:/var/lib/postgresql/data
+    networks:
+      - default
+  keycloak-spi:
+    image: keycloak-spi:latest
+    depends_on:
+      - keycloak-db
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+
+networks:
+  default:
+    name: my-network
